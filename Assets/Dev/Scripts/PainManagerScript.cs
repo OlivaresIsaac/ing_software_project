@@ -7,6 +7,7 @@ public class PainManagerScript : MonoBehaviour
     // Start is called before the first frame update
     private Texture2D currentMask;
     private Texture2D newMask;
+    public Texture2D backgroundImage;
     private Renderer crenderer;
     public Texture2D[] splashTextures;
     private SpriteRenderer spriteRenderer;
@@ -43,11 +44,12 @@ public class PainManagerScript : MonoBehaviour
         yCentered-= splashTextures[0].height/2;
         Color[] cArray = new Color[width*height];
         Color[] currentPixels = this.newMask.GetPixels(xCentered, yCentered, width, height, 0);
-        Color[] splash = this.splashTextures[0].GetPixels();
+        Color[] imagePixels = this.backgroundImage.GetPixels(xCentered, yCentered, width, height, 0);
+        Color[] splash = this.splashTextures[Random.Range(0,this.splashTextures.Length)].GetPixels();
         for(int i = 0; i < cArray.Length; i++) {
  
             if(splash[i].r >= 0.1) {
-                cArray[i]=color;
+                cArray[i]=imagePixels[i];
             } else {
                
                 cArray[i] = currentPixels[i];
@@ -97,5 +99,7 @@ public class PainManagerScript : MonoBehaviour
         int realY = Mathf.FloorToInt(y);    
         return(new Vector2(x,y));
     }
+
+
 
 }

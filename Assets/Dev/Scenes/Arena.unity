@@ -177,7 +177,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458497145}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.06, y: 0.18, z: -10}
+  m_LocalPosition: {x: -0.63, y: 5.09, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -403,7 +403,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1069146140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.17, z: 0}
+  m_LocalPosition: {x: 0, y: 3.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -422,5 +422,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56820c0684d3e341a027fdd7ac3f15f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundImage: {fileID: 2800000, guid: 3985c1e2d7c5cb04ca11d80cfe51d7a2, type: 3}
   splashTextures:
-  - {fileID: 2800000, guid: 653bd20bf2b6fb849b9ce4faaee28206, type: 3}
+  - {fileID: 2800000, guid: b1d958a793224f549a977d45472213d0, type: 3}
+  - {fileID: 2800000, guid: 26bd8753963a52e4e871e026e6f45f02, type: 3}
+  - {fileID: 2800000, guid: 0a9b8a0b3f1c1f448a7e0996a762bc77, type: 3}
+  - {fileID: 2800000, guid: 5f2915e7719571645ae4cd10f94fb209, type: 3}
