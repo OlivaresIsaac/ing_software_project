@@ -37,19 +37,25 @@ public class PainManagerScript : MonoBehaviour
     }
 
     public void PaintMask(int x, int y, int width, int height, Color color){
-        x-= splashTextures[0].width/2;
-        y-= splashTextures[0].height/2;
+        int xCentered = x;
+        int yCentered = y;
+        xCentered -= splashTextures[0].width/2;
+        yCentered-= splashTextures[0].height/2;
         Color[] cArray = new Color[width*height];
+        Color[] currentPixels = this.newMask.GetPixels(xCentered, yCentered, width, height, 0);
         Color[] splash = this.splashTextures[0].GetPixels();
         for(int i = 0; i < cArray.Length; i++) {
+ 
             if(splash[i].r >= 0.1) {
                 cArray[i]=color;
-            } 
+            } else {
+               
+                cArray[i] = currentPixels[i];
+            }
           
-        }
-        this.newMask.SetPixels(x,y,width,height,cArray, 0);
-        // this.newMask.SetPixels(250, 250, 64,64, this.splashTextures[0].GetPixels(),0);
-
+         }
+        this.newMask.SetPixels(xCentered,yCentered,width,height,cArray, 0);
+ 
 
         this.newMask.Apply();
         this.crenderer.material.mainTexture = newMask;
@@ -59,7 +65,7 @@ public class PainManagerScript : MonoBehaviour
 
     public void ResetCanvas(){
       
-        Vector2 canvasSize = new Vector2(currentMask.width, currentMask.width);
+        Vector2 canvasSize = new Vector2(currentMask.width, currentMask.height);
         Color[] cArray = new Color[(int)canvasSize.x*(int)canvasSize.y];
         for(int i = 0; i < cArray.Length; i++) {
             cArray[i]=Color.black;
@@ -88,11 +94,7 @@ public class PainManagerScript : MonoBehaviour
         x += rect.x;
         y += rect.y;
         int realX = Mathf.FloorToInt(x);
-        int realY = Mathf.FloorToInt(y);
-        print(realX);
-        print(realY);
-
-       
+        int realY = Mathf.FloorToInt(y);    
         return(new Vector2(x,y));
     }
 
