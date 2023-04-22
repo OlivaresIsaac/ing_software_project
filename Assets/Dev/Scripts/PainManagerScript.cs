@@ -31,14 +31,14 @@ public class PainManagerScript : MonoBehaviour
         if(Input.GetMouseButtonDown(0)) {
             Vector2 mousePos = GetImageMousePositionOnImage();
             //TODO automatizar tamaño
-        //    PaintMask((int)mousePos.x,(int)mousePos.y,512,512,Color.red);
-            PaintMask(0,0,256,256,Color.red);
+         PaintMask((int)mousePos.x,(int)mousePos.y,256,256,Color.red);
+           //PaintMask(0,0,256,256,Color.red);
         }
     }
 
     public void PaintMask(int x, int y, int width, int height, Color color){
-        // x-= splashTextures[0].width/2;
-        // y-= splashTextures[0].height/2;
+        x-= splashTextures[0].width/2;
+        y-= splashTextures[0].height/2;
         Color[] cArray = new Color[width*height];
         Color[] splash = this.splashTextures[0].GetPixels();
         for(int i = 0; i < cArray.Length; i++) {
@@ -79,10 +79,18 @@ public class PainManagerScript : MonoBehaviour
         Rect rect =  sprite.textureRect;
         float x = pos.x-gameObject.transform.position.x;
         float y = pos.y-gameObject.transform.position.y;
-        x*= currentMask.width;
-        y*= currentMask.height;
-        x+= currentMask.width/2;
-        y+= currentMask.height/2;
+        x *= sprite.pixelsPerUnit;
+        y *= sprite.pixelsPerUnit;
+        // x*= currentMask.width;
+        // y*= currentMask.height;
+        x+= rect.width/2;
+        y+= rect.height/2;
+        x += rect.x;
+        y += rect.y;
+        int realX = Mathf.FloorToInt(x);
+        int realY = Mathf.FloorToInt(y);
+        print(realX);
+        print(realY);
 
        
         return(new Vector2(x,y));
