@@ -31,13 +31,14 @@ public class PainManagerScript : MonoBehaviour
         if(Input.GetMouseButtonDown(0)) {
             Vector2 mousePos = GetImageMousePositionOnImage();
             //TODO automatizar tamaño
-           PaintMask((int)mousePos.x,(int)mousePos.y,512,512,Color.red);
+        //    PaintMask((int)mousePos.x,(int)mousePos.y,512,512,Color.red);
+            PaintMask(0,0,256,256,Color.red);
         }
     }
 
     public void PaintMask(int x, int y, int width, int height, Color color){
-        x-= splashTextures[0].width/2;
-        y-= splashTextures[0].height/2;
+        // x-= splashTextures[0].width/2;
+        // y-= splashTextures[0].height/2;
         Color[] cArray = new Color[width*height];
         Color[] splash = this.splashTextures[0].GetPixels();
         for(int i = 0; i < cArray.Length; i++) {
