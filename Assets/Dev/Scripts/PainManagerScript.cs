@@ -35,9 +35,10 @@ public class PainManagerScript : MonoBehaviour
         if(Input.GetMouseButtonDown(0)) {
             Vector2 mousePos = GetImageMousePositionOnImage();
             //TODO automatizar tamaño
-         PaintMask((int)mousePos.x,(int)mousePos.y,128,128 ); // con mouse
+        // PaintMask((int)mousePos.x,(int)mousePos.y,128,128 ); // con mouse
            //PaintMask(0,0,256,256,Color.red);
-          // PaintMask(getLowerLeftCoords().x,getLowerLeftCoords().y,128,128);
+           PaintMask(getLowerLeftCoords().x,getLowerLeftCoords().y,128,128);
+            PaintMask(getLowerLeftCoords().x+128,getLowerLeftCoords().y,128,128);
         }
     }
 
@@ -105,24 +106,24 @@ public class PainManagerScript : MonoBehaviour
         return(new Vector2(x,y));
     }
 
-    // public Vector2Int getLowerLeftCoords(){
-    //     Camera camera = Camera.main;
-    //     Vector3 pos = camera.ViewportToWorldPoint(new Vector3(0,0,camera.nearClipPlane));
-    //     Sprite sprite = spriteRenderer.sprite;
-    //     Rect rect =  sprite.textureRect;
-    //     float x = pos.x-gameObject.transform.position.x;
-    //     float y = pos.y-gameObject.transform.position.y;
-    //     x *= sprite.pixelsPerUnit;
-    //     y *= sprite.pixelsPerUnit;
-    //     x+= rect.width/2;
-    //     y+= rect.height/2;
-    //     x += rect.x;
-    //     y += rect.y;
-    //     int realX = Mathf.FloorToInt(x);
-    //     int realY = Mathf.FloorToInt(y); 
+    public Vector2Int getLowerLeftCoords(){
+        Camera camera = Camera.main;
+        Vector3 pos = camera.ViewportToWorldPoint(new Vector3(0,0,camera.nearClipPlane));
+        Sprite sprite = spriteRenderer.sprite;
+        Rect rect =  sprite.textureRect;
+        float x = pos.x-gameObject.transform.position.x;
+        float y = pos.y-gameObject.transform.position.y;
+        x *= sprite.pixelsPerUnit;
+        y *= sprite.pixelsPerUnit;
+        x+= rect.width/2;
+        y+= rect.height/2;
+        x += rect.x;
+        y += rect.y;
+        int realX = Mathf.FloorToInt(x);
+        int realY = Mathf.FloorToInt(y); 
 
-    //     return new Vector2Int(realX, realY);
-    // }
+        return new Vector2Int(realX, realY);
+    }
 
 
 

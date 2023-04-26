@@ -10,11 +10,14 @@ public class GridManagerScript : MonoBehaviour
     public Vector2Int canvasSize;
     public int blockPixelSize;//potencia de 2
     private SpriteRenderer spriteRenderer;
+    private Camera mainCamera;
     void Start()
     {
+        mainCamera = Camera.main;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        this.coordsMatrix = initializeCoordsMatrix();
+        this.coordsMatrix = initializeCoordsMatrix(this.canvasSize, this.blockPixelSize);
         this.isPaintedMatrix = initializeIsPaintedMatrix(this.canvasSize, this.blockPixelSize);
+       
 
     }
 
@@ -24,33 +27,38 @@ public class GridManagerScript : MonoBehaviour
         
     }
 
-    public Vector2[,] initializeCoordsMatrix(){
+    public Vector2[,] initializeCoordsMatrix(Vector2Int canvasSize, int blockPixelSize){
         Camera camera = Camera.main;
-        // Vector3 upperLeftScreen = new Vector3(0, Screen.height, 0 );
-        // Vector3 upperRightScreen = new Vector3(Screen.width, Screen.height, 0);
       
-        // Vector3 lowerRightScreen = new Vector3(Screen.width, 0, 0);
-    
-    //Corner locations in world coordinates
-        // Vector3 upperLeft = camera.ScreenToWorldPoint(upperLeftScreen);
-        // Vector3 upperRight = camera.ScreenToWorldPoint(upperRightScreen);
-        Vector3 lowerLeft =  camera.ViewportToWorldPoint(new Vector3(0,0,camera.nearClipPlane));
-        // Vector3 lowerRight = camera.ScreenToWorldPoint(lowerRightScreen);
-        print(lowerLeft);
 
-        return null;
+        Vector2Int size = getMatrixDimensions(canvasSize, blockPixelSize);
+        // y determina las filas, x las columnas
+        Vector2[,] auxCoordsMatrix = new Vector2[size.y,size.x];
+        Vector2Int originalCoords = getLowerLeftCoords();
+        Vector2Int currentCoords = originalCoords;
+        for(int i = size.y-1; i >=0; i--){
+            for(int j = 0; j < size.x; j++){
+                auxCoordsMatrix[i,j] = currentCoords;
+                currentCoords.x += blockPixelSize;
+                string msg = "fila: "+i.ToString()+" columna: " +j.ToString()+ " x="+ currentCoords.x.ToString()+" y="+currentCoords.y.ToString();
+                print(msg);
+            }
+            currentCoords.y += blockPixelSize;
+            currentCoords.x = originalCoords.x;
+        }
+        //per step son 128 pixeles
+
+        return auxCoordsMatrix;
     }
 
     public int[,] initializeIsPaintedMatrix(Vector2Int canvasSize, int blockPixelSize){
-        int unitsInX = canvasSize.x / blockPixelSize;
-        int unitsInY = canvasSize.y / blockPixelSize;
-
-        return new int[unitsInX,unitsInY];
+        Vector2Int size = getMatrixDimensions(canvasSize, blockPixelSize);
+        return new int[size.y,size.x];
     }
 
     public Vector2Int getLowerLeftCoords(){
-        Camera camera = Camera.main;
-        Vector3 pos = camera.ViewportToWorldPoint(new Vector3(0,0,camera.nearClipPlane));
+       //TODO revisar para dimensiones distintas a 9:16
+        Vector3 pos = this.mainCamera.ViewportToWorldPoint(new Vector3(0,0,mainCamera.nearClipPlane));
         Sprite sprite = spriteRenderer.sprite;
         Rect rect =  sprite.textureRect;
         float x = pos.x-gameObject.transform.position.x;
@@ -65,6 +73,14 @@ public class GridManagerScript : MonoBehaviour
         int realY = Mathf.FloorToInt(y); 
 
         return new Vector2Int(realX, realY);
+    }
+
+    public Vector2Int getMatrixDimensions(Vector2Int canvasSize, int blockPixelSize){
+        int unitsInX = canvasSize.x / blockPixelSize;
+        int unitsInY = canvasSize.y / blockPixelSize;
+        print(unitsInX);
+        print(unitsInY);
+        return new Vector2Int(unitsInX,unitsInY);
     }
 
     
