@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 458497145}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.55, y: 4.33, z: -10}
+  m_LocalPosition: {x: -2.55, y: 0.82, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -251,8 +251,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1069146142}
   - component: {fileID: 1069146141}
-  - component: {fileID: 1069146143}
   - component: {fileID: 1069146144}
+  - component: {fileID: 1069146143}
   m_Layer: 0
   m_Name: Lienzo
   m_TagString: Untagged
@@ -340,11 +340,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundImage: {fileID: 2800000, guid: 1f565c2115bdd3a498af11877c996e4a, type: 3}
-  splashTextures:
-  - {fileID: 2800000, guid: b1d958a793224f549a977d45472213d0, type: 3}
-  - {fileID: 2800000, guid: 26bd8753963a52e4e871e026e6f45f02, type: 3}
-  - {fileID: 2800000, guid: 0a9b8a0b3f1c1f448a7e0996a762bc77, type: 3}
-  - {fileID: 2800000, guid: 5f2915e7719571645ae4cd10f94fb209, type: 3}
+  xOffset: 518
+  yOffset: 486
+  grid: {fileID: 1069146144}
 --- !u!114 &1069146144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,5 +355,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fc689724cb863b47b9fb4f54b416005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasSize: {x: 1024, y: 1792}
+  canvasSize: {x: 1028, y: 1792}
   blockPixelSize: 128

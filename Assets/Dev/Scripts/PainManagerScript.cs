@@ -9,8 +9,11 @@ public class PainManagerScript : MonoBehaviour
     private Texture2D newMask;
     public Texture2D backgroundImage;
     private Renderer crenderer;
-    public Texture2D[] splashTextures;
     private SpriteRenderer spriteRenderer;
+    public int xOffset;
+    public int yOffset;
+
+    public GridManagerScript grid;
     void Start()
     {
         crenderer = GetComponent<Renderer>();
@@ -20,8 +23,8 @@ public class PainManagerScript : MonoBehaviour
         ResetCanvas();
 
         // Camera camera = Camera.main;
-        // print(camera.pixelWidth);
-
+        // print(camera.pixelWidth);    
+        //print(closestDownMultiple(330.5f, grid.blockPixelSize));
        
 
     
@@ -32,13 +35,36 @@ public class PainManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       detectPaint();
+    }
+
+    public void detectPaint(){
         if(Input.GetMouseButtonDown(0)) {
-            Vector2 mousePos = GetImageMousePositionOnImage();
-            //TODO automatizar tamaño
-        // PaintMask((int)mousePos.x,(int)mousePos.y,128,128 ); // con mouse
+            //Vector2 mousePos = GetImageMousePositionOnImage();
+            Vector2 clickPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 pos = worldCoordsToImageCoords(clickPos.x, clickPos.y);
+            // for now
+            //pos = GetImageMousePositionOnImage();
+            // for now
+
+            int xIndex = closestDownMultiple((pos.x-xOffset),this.grid.blockPixelSize, true);
+            int yIndex = closestDownMultiple((pos.y-yOffset),this.grid.blockPixelSize, false);
+            // no esta funcionando el closest
+           // string msg = "la posicion en y es "+pos.y.ToString()+" y su yIndex es "+yIndex.ToString();
+           // print(msg);
+            Vector2Int maxMatrixSize = this.grid.getMatrixDimensions(this.grid.canvasSize, this.grid.blockPixelSize);
+            bool areIndexesValid = (xIndex >= 0) && (yIndex >= 0) && (xIndex <maxMatrixSize.x && (yIndex < maxMatrixSize.y));
+            if(areIndexesValid) {
+                Vector2Int finalPos =  mapIndexToCoord(xIndex,yIndex);
+                PaintMask(finalPos.x,finalPos.y,this.grid.blockPixelSize,this.grid.blockPixelSize );
+            } else {
+                
+                print("Se intentó pintar fuera del grid en x="+pos.x.ToString() + " y=" +pos.y.ToString());
+            }
+           
            //PaintMask(0,0,256,256,Color.red);
-           PaintMask(getLowerLeftCoords().x,getLowerLeftCoords().y,128,128);
-            PaintMask(getLowerLeftCoords().x+128,getLowerLeftCoords().y,128,128);
+           //PaintMask(getLowerLeftCoords().x,getLowerLeftCoords().y,128,128);
+           
         }
     }
 
@@ -123,6 +149,49 @@ public class PainManagerScript : MonoBehaviour
         int realY = Mathf.FloorToInt(y); 
 
         return new Vector2Int(realX, realY);
+    }
+
+    public Vector2 worldCoordsToImageCoords(float worldX,float worldY) {
+        Sprite sprite = spriteRenderer.sprite;
+        Rect rect =  sprite.textureRect;
+        float x = worldX-gameObject.transform.position.x;
+        float y = worldY-gameObject.transform.position.y;
+        x *= sprite.pixelsPerUnit;
+        y *= sprite.pixelsPerUnit;
+        // x*= currentMask.width;
+        // y*= currentMask.height;
+        x+= rect.width/2;
+        y+= rect.height/2;
+        x += rect.x;
+        y += rect.y;
+        int realX = Mathf.FloorToInt(x);
+        int realY = Mathf.FloorToInt(y);    
+        return(new Vector2(x,y));
+    }
+
+    public int closestDownMultiple(float num, int blockPixelSize, bool isX){
+        // returns the index of the closest rounded down blockPixelSize multiple
+        int previousMultiple = 0;
+        int nextMultiple = 0;
+        int maxIteration = (grid.canvasSize.y /blockPixelSize)-1;
+        for(int i = 0; i<= maxIteration;i++){
+            previousMultiple = nextMultiple;
+            nextMultiple = blockPixelSize*(i+1);
+            if((previousMultiple <= num)&&(num < nextMultiple)){
+                if (isX){
+                    return i;
+                } else {
+                    return maxIteration-i+1;
+                }
+               
+            }
+           
+        }
+        return -1;
+    }
+
+    public Vector2Int mapIndexToCoord(int Xindex, int YIndex){
+        return this.grid.getCoordsMatrix()[YIndex, Xindex];
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class GridManagerScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    private Vector2[,] coordsMatrix;
+    public Vector2Int[,] coordsMatrix;
     private int[,] isPaintedMatrix;//0 not painted, 1 painted
     public Vector2Int canvasSize;
     public int blockPixelSize;//potencia de 2
@@ -27,13 +27,13 @@ public class GridManagerScript : MonoBehaviour
         
     }
 
-    public Vector2[,] initializeCoordsMatrix(Vector2Int canvasSize, int blockPixelSize){
+    public Vector2Int[,] initializeCoordsMatrix(Vector2Int canvasSize, int blockPixelSize){
         Camera camera = Camera.main;
       
 
         Vector2Int size = getMatrixDimensions(canvasSize, blockPixelSize);
         // y determina las filas, x las columnas
-        Vector2[,] auxCoordsMatrix = new Vector2[size.y,size.x];
+        Vector2Int[,] auxCoordsMatrix = new Vector2Int[size.y,size.x];
         Vector2Int originalCoords = getLowerLeftCoords();
         Vector2Int currentCoords = originalCoords;
         for(int i = size.y-1; i >=0; i--){
@@ -78,10 +78,13 @@ public class GridManagerScript : MonoBehaviour
     public Vector2Int getMatrixDimensions(Vector2Int canvasSize, int blockPixelSize){
         int unitsInX = canvasSize.x / blockPixelSize;
         int unitsInY = canvasSize.y / blockPixelSize;
-        print(unitsInX);
-        print(unitsInY);
+       
         return new Vector2Int(unitsInX,unitsInY);
     }
 
-    
+    public Vector2Int[,] getCoordsMatrix(){
+        return this.coordsMatrix;
+    }
+
+ 
 }
